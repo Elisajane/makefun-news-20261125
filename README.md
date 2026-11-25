@@ -1,55 +1,58 @@
+[![make.fun bounty news-image-20261125](https://make.fun/badge/news-image-20261125.svg)](https://make.fun/bounty/news-image-20261125)
+[![entry rank on make.fun](https://make.fun/badge/news-image-20261125/Elisajane/makefun-news-20261125/rank.svg)](https://make.fun/bounty/news-image-20261125)
+[![reward pool on make.fun](https://make.fun/badge/news-image-20261125/Elisajane/makefun-news-20261125/reward.svg)](https://make.fun/bounty/news-image-20261125)
+
 # World News in One Image — 25 November 2026
 
-[![make.fun](https://make.fun/badge/news-image-20261125.svg)](https://make.fun/bounty/news-image-20261125)
-[![Rank](https://make.fun/badge/news-image-20261125/Elisajane/makefun-news-20261125/rank.svg)](https://make.fun/bounty/news-image-20261125)
-[![Reward](https://make.fun/badge/news-image-20261125/Elisajane/makefun-news-20261125/reward.svg)](https://make.fun/bounty/news-image-20261125)
+An entry for the make.fun bounty [Sum up 25 November's world news in
+one image](https://make.fun/bounty/news-image-20261125). It turns the
+day's world news into a single newspaper front page: six stories first
+reported on Wednesday, 25 November 2026, set as one 1024 by 1024
+picture.
 
-Entry for the make.fun bounty ["Sum up 25 November's world news in one image"](https://make.fun/bounty/news-image-20261125), by **@elisajane**.
+## How it works
 
-## The image
+`build_image.py` draws the front page with Pillow and the DejaVu fonts
+already on the machine, and saves it as `entry.png` in this folder.
+`main.py` is the program the bounty runs: it copies that bundled
+`entry.png`, byte for byte, to the output folder, so the image the
+judge sees is always exactly the one in this repository.
 
-`entry.png` (1024×1024, PNG) summarises Wednesday, 25 November 2026 in six
-stories, all first reported that day:
-
-1. **Strait of Hormuz — Two tankers hit mines.** Iran's Revolutionary Guard
-   says two oil tankers struck naval mines and caught fire in the Strait of
-   Hormuz early on Wednesday.
-2. **China / Space — First foreign astronaut aboard Tiangong.** China's
-   Shenzhou-24 launches with Pakistan's Zeeshan Ali, the first foreign
-   astronaut to board the Tiangong space station.
-3. **Colombia — All hostages freed in Cartagena siege.** Colombian forces
-   storm a supermarket in Cartagena, freeing all remaining hostages after a
-   day-long siege; one captor is killed.
-4. **Indonesia — 26 miners trapped in flooded mine.** Rescuers search for 26
-   workers trapped in a flooded illegal gold mine in Bogor, West Java; three
-   bodies are recovered.
-5. **Pacific — Solomons sign treaty with Australia.** Solomon Islands signs a
-   security treaty with Australia and vows no foreign military bases on its
-   soil, as its 2022 pact with China is left to lapse.
-6. **Hong Kong — One year on from the Tai Po fire.** Hong Kong marks a year
-   since the Tai Po fire that killed 168 people, as survivors mourn and seek
-   accountability.
-
-The image was rendered by `build_image.py` (PIL, DejaVu fonts) — flat,
-high-contrast newspaper style, readable at small sizes, no AI-generated
-photography and no garbled text.
-
-## The program
-
-`main.py` (Python 3.12, standard library only) copies the stored
-`entry.png` to the output directory as `entry.png`. It uses no network,
-no randomness and no timestamps, so repeated runs produce byte-identical
-output.
-
-Run it locally:
+## Run it
 
 ```sh
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
+python3 build_image.py   # redraw entry.png from scratch
+python3 main.py          # copy entry.png to /output/entry.png
 ```
 
-## Submission
+To send the copy somewhere else, set `MAKEFUN_OUTPUT_DIR` first:
 
-- Account: make.fun **@elisajane**, GitHub **Elisajane**
-- Wallet: `5wZf…uJE4` (see `.makefun/owner.json`)
-- Prize: $100 for 50 places (1st $20); final Fri 27 Nov 07:00 WIB.
-- License: MIT (see `LICENSE`).
+```sh
+MAKEFUN_OUTPUT_DIR=/tmp/out python3 main.py
+```
+
+## Needs
+
+- Python 3.13
+- Pillow, for `build_image.py` only; `main.py` uses the standard
+  library alone and never touches the network.
+
+## Determinism
+
+`main.py` only copies bytes, so running it twice writes identical
+files. Check it yourself:
+
+```sh
+MAKEFUN_OUTPUT_DIR=/tmp/a python3 main.py
+MAKEFUN_OUTPUT_DIR=/tmp/b python3 main.py
+sha256sum /tmp/a/entry.png /tmp/b/entry.png
+```
+
+Both hashes come out the same.
+
+## The six stories
+
+Two tankers on fire in the Strait of Hormuz; Shenzhou-24 carrying
+Pakistan's first astronaut to Tiangong; the freed hostages in
+Cartagena; the trapped miners in Bogor; the Australia–Solomon Islands
+treaty signed in Canberra; and one year since the Tai Po fire.
